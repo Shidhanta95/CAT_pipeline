@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from data_extract import extract_data
 import zipfile
 import requests
-
+from io import BytesIO
 def open_random_images(path):
     # Get a list of all files in the folder
     all_files = os.listdir(path)
