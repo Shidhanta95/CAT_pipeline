@@ -15,9 +15,9 @@ def open_random_images(path):
     # Get a list of all files in the folder
     all_files = os.listdir(path)
     random.shuffle(all_files)
-    image_names = all_files[:7]
+    image_names = all_files[:2]
     image_paths = []
-    for i in range(7):
+    for i in range(2):
         image_path = os.path.join(path, image_names[i])
         image_paths.append(image_path)
     return image_paths
@@ -54,8 +54,9 @@ def openimage():
     x = open_random_images(path)
     count = 0
     for file in x:
-        filearr = file.split("/")[-1]
-        filename = filearr.split(".")[0]
+        filename = file.split(".")[0]
+        filearr = filename.split("/")[-1]
+        
         # Read the .nii image containing the volume with SimpleITK
         # sitk_t1 = sitk.ReadImage(file)
         # # and access the numpy array:
@@ -80,7 +81,8 @@ def openimage():
         # Convert the image data to an unsigned 8-bit integer array
         slice_image = slice_image.astype('uint8')
         img_png = Image.fromarray(slice_image)
-        img_png.save(f'img/{filename}.png')
+        img_path = os.path.join(os.getcwd(),"img")
+        img_png.save(f'{img_path}_{filearr}.png')
         count=count+1
         plt.imshow(img_data[:, :, slice_index], cmap='gray')
         plt.axis('off')  # Turn off axis
