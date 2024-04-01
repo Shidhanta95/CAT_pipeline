@@ -9,7 +9,9 @@ from skimage import io
 import SimpleITK as sitk
 from matplotlib.pyplot import plot 
 import matplotlib.pyplot as plt
-
+from data_extract import extract_data
+import zipfile
+import requests
 
 def open_random_images(path):
     # Get a list of all files in the folder
@@ -50,6 +52,19 @@ def open_random_images(path):
 
 
 def openimage():
+    try:
+        url = extract_data()
+        url_response = requests.get(url)
+        url_response.raise_for_status()  # Raise an error for bad responses
+        with zipfile.ZipFile(BytesIO(url_response.content)) as z:
+            z.extractall('.')
+        print("Data extraction successful.")
+    except requests.exceptions.RequestException as e:
+        print("Error downloading data:", e)
+    except zipfile.BadZipFile:
+        print("The downloaded file is not a valid zip file.")
+    except Exception as e:
+        print("An unexpected error occurred:", e)
     path = os.path.join(os.getcwd(),"datasample/images")
     x = open_random_images(path)
     count = 0
