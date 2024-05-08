@@ -17,7 +17,7 @@ from datetime import datetime
 import shutil
 import glob
 
-import pickle
+import dill as pickle
 class NpyDataset(Dataset):
     def __init__(self, data_root, bbox_shift=20):
         self.data_root = data_root
